@@ -115,4 +115,8 @@ public class ProductController {
         return products.stream().collect(Collectors.toMap(keyFunction, valueFunction));
     }
 
+    @GetMapping(value = "/Produits/ordered")
+    public List<Product> trierProduitsParOrdreAlphabetique() {
+        return productDao.findAllByOrderByNomAsc();
+    }
 }
