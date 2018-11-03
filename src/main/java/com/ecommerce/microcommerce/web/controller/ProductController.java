@@ -17,6 +17,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Api( description="API pour es opérations CRUD sur les produits.")
@@ -103,6 +106,13 @@ public class ProductController {
         return productDao.chercherUnProduitCher(400);
     }
 
+    @GetMapping(value = "AdminProduits")
+    public Map<String, Integer> calculerMargeProduit() {
+        List<Product> products = productDao.findAll();
+        Function<Product, String> keyFunction = p -> p.toString();
+        Function<Product, Integer> valueFunction = p -> p.getPrix() - p.getPrixAchat();
 
+        return products.stream().collect(Collectors.toMap(keyFunction, valueFunction));
+    }
 
 }
